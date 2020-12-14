@@ -1,0 +1,42 @@
+.table {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  height: 300px;
+  margin: 20px;
+  border: 1px solid #363636;
+  background-color: #222222;
+  color: #FFFFFF;
+
+  &__title {
+    font-size: 24px;
+    text-align: center;
+  }
+
+  &__content {
+    display: flex;
+    flex: 1 0 auto;
+    justify-content: space-around;
+  }
+
+  &__switcher {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__cases {
+    color: red;
+  }
+
+  &__deaths {
+    color: lightgrey;
+  }
+
+  &__recovered {
+    color: green;
+  }
+}
