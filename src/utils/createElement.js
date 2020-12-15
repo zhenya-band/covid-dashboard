@@ -19,7 +19,7 @@ export default function createElement(el, classNames, child, parent, ...dataAttr
   }
 
   if (child && Array.isArray(child)) {
-    child.forEach((childElement) => childElement && element.appendChild(childElement));
+    child.forEach((childElement) => childElement && element.append(childElement));
   } else if (child && typeof child === 'object') {
     element.appendChild(child);
   } else if (child && typeof child === 'string') {
@@ -34,7 +34,7 @@ export default function createElement(el, classNames, child, parent, ...dataAttr
     dataAttr.forEach(([attrName, attrValue]) => {
       if (attrValue === '') {
         element.setAttribute(attrName, '');
-      } else if (attrName.match(/value|id|placeholder|cols|rows|autocorrect|spellcheck|src/)) {
+      } else if (attrName.match(/value|id|placeholder|cols|rows|autocorrect|spellcheck|src|type|name|checked/)) {
         element.setAttribute(attrName, attrValue);
       } else {
         element.dataset[attrName] = attrValue;

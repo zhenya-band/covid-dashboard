@@ -1,5 +1,5 @@
 import './style.scss';
 
-import mainList from "./components/mailList.component";
+import List from "./components/List.component";
 
-new mainList().init();
+new List().init();

@@ -1,0 +1,48 @@
+.heading {
+  font-size: 35px;
+}
+
+.list {
+  margin: 0;
+  max-width: 350px;
+  max-height: 500px;
+  overflow: auto;
+  background-color: rgb(70, 70, 70);
+  color: #fff;
+  
+  &__heading {
+    text-align: center;
+    font-size: 25px;
+    
+  }
+  
+  &__content {
+    padding: 0;
+    
+  }
+
+  &__item {
+    list-style: none;
+    font-size: 20px;
+    
+
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &-switchers {
+    display: flex;
+
+    &__label {
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
