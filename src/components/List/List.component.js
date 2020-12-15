@@ -1,5 +1,5 @@
-import createElement from "../utils/createElement";
-import getData from "../utils/getData";
+import createElement from "../../utils/createElement";
+import getData from "../../utils/getData";
 
 import './List.scss';
 
