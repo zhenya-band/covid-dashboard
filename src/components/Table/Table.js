@@ -1,10 +1,9 @@
 import createElement from '../../utils/createElement';
 import Switcher from '../Switcher/Switcher.component';
-import SwitcherObserver from '../../SwitcherObserver';
 import './Table.scss';
 
 class Table {
-  constructor(parentElement) {
+  constructor(parentElement, observer) {
     this.table = createElement('div', 'table', null, parentElement);
     
     this.title = createElement('p', 'table__title', '-', this.table);
@@ -29,15 +28,11 @@ class Table {
       this.recovered
     ], content);
     
-    this.timeSwitcherObserver = new SwitcherObserver();
-
     this.timeSwitcher = new Switcher(this.table, ['all time', 'last day'], (value) => this.updateTime(value));
-    this.timeSwitcher2 = new Switcher(this.table, ['all time', 'last day'], (value) => this.updateTime(value));
-    const populationSwitcher = new Switcher(this.table, ['total', 'per 100,000 population'], (value) => this.updatePopulation(value));
+    observer.subscribe(this.timeSwitcher);
 
-    this.timeSwitcherObserver.subscribe(this.timeSwitcher);
-    this.timeSwitcherObserver.subscribe(this.timeSwitcher2);
-    
+    this.populationSwitcher = new Switcher(this.table, ['total', 'per 100,000 population'], (value) => this.updatePopulation(value));
+
     this.loadData();
   }
 
