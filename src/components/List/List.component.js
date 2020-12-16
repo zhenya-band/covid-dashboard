@@ -1,7 +1,6 @@
 import createElement from "../../utils/createElement";
 import getData from "../../utils/getData";
 import Switcher from '../Switcher/Switcher.component';
-import SwitcherObserver from '../../SwitcherObserver';
 
 import './List.scss';
 
@@ -20,7 +19,7 @@ function checkTime(time, TotalConfirmed, NewConfirmed) {
 }
 
 export default class List {
-  constructor() {
+  constructor(observer) {
     this.body = document.querySelector('body');
     
     this.listHeadingTitle = createElement('div', 'list-heading__title', 'Total cases');
@@ -31,7 +30,8 @@ export default class List {
     this.list = createElement('div', 'list', [this.listHeading, this.listSwithers, this.listContent], this.body);
 
     this.timeSwitcher = new Switcher(this.listHeading, ['all time', 'last day'], (value) => this.updateTime(value));
-
+    observer.subscribe(this.timeSwitcher);
+    
     this.timeProp = 'allTime';
     this.populationProp = 'absolute';
     
