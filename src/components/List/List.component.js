@@ -1,10 +1,11 @@
 import createElement from "../../utils/createElement";
 import getData from "../../utils/getData";
+import Switcher from "../Switcher/Switcher.component";
 
 import './List.scss';
 
 const summaryURL = 'https://api.covid19api.com/summary';
-const populationURL = 'https://restcountries.eu/rest/v2/all?fields=name;population;';
+const populationURL = 'https://restcountries.eu/rest/v2/all?fields=name;population;flag';
 
 function checkPopulationProp(populationProp, population) {
   if (populationProp === 'relative') {
@@ -16,7 +17,12 @@ function checkPopulationProp(populationProp, population) {
 export default class List {
   constructor() {
     this.body = document.querySelector('body');
-    this.listHeading = createElement('div', 'list__heading');
+    
+    this.listHeadingTitle = createElement('div', 'list-heading__title', 'Total cases');
+    this.listHeadingData =  createElement('div', 'list-heading__data list-heading__data--red');
+
+    this.listHeading = createElement('div', 'list-heading', [this.listHeadingTitle, this.listHeadingData]);
+
     this.listInputAllTime = createElement('input', 'list-switchers__input', null, null, ['type', 'radio'], ['name', 'time'], ['value', 'allTime'], ['checked', 'true']);
     this.listInputLastDay = createElement('input', 'list-switchers__input', null, null, ['type', 'radio'], ['name', 'time'], ['value', 'lastDay']);
     this.inputAbsolutePopulation = createElement('input', 'list-switchers__input', null, null, ['type', 'radio'], ['name', 'population'], ['value', 'absolute'], ['checked', 'true']);
@@ -43,6 +49,7 @@ export default class List {
     this.inputRelativePopulation.addEventListener('change', this.changePopulationProp);
     
     this.list.addEventListener('click', this.handleClick);
+    // Switcher(this.list, ['all time', 'last day'], (value) => this.renderHeading(value));
   }
 
   getPopulation() {
@@ -64,44 +71,46 @@ export default class List {
   }
 
   renderHeading(countryName) {
+    this.listHeadingData.textContent = '';
     getData(summaryURL).then((data) => {
-      this.listHeading.textContent = '';
-      const headingText = this.timeProp === 'allTime' ? 'Total confirmed' : 'Last day confirmed';
-      const timeRequest =  this.timeProp === 'allTime' ? 'TotalConfirmed' : 'NewConfirmed';
-
       if (countryName) {
         const targetCountry = data.Countries.find((item) => item.Country === countryName);
-        this.listHeading.append(`${headingText} ${Math.floor(targetCountry[timeRequest])}`);
+        this.listHeadingData.append(`${Math.floor(targetCountry[this.timeProp])}`);
       } else {
-        this.listHeading.append(`${headingText} ${data.Global.NewConfirmed}`);
+        this.listHeadingData.append(`${data.Global.NewConfirmed}`);
       }
     });
   }
 
   renderList() {
+    let i = 0;
     this.listContent.innerHTML = '';
     getData(summaryURL).then(({Countries}) => {
       Countries.forEach(({Country, TotalConfirmed, NewConfirmed}) => {
-        const {population} = this.population.find((item) => item.name === Country) || 0;
+        const {population, flag} = this.population.find((item) => item.name === Country ) || 0;
+        console.log(i+=1);
+        
         if (this.timeProp === 'allTime') {
-          const listItem = createElement('li', 'list__item', 
-            `${Math.floor(TotalConfirmed * checkPopulationProp(this.populationProp, population))} ${Country}`, null, ['countryName', Country]);
+          const listItemFlag = createElement('img', 'list-item__flag', null, null, ['src', `${flag}`]);
+          const countryName = createElement('div', 'list-item__country', Country);
+          const countryData = createElement('div', 'list-item__data', `${Math.floor(TotalConfirmed * checkPopulationProp(this.populationProp, population))}`);
+          const listItem = createElement('li', 'list-item', [listItemFlag, countryName, countryData]);
           this.listContent.append(listItem);
         } else {
-          const listItem = createElement('li', 'list__item', 
-            `${Math.floor(NewConfirmed * checkPopulationProp(this.populationProp, population))} ${Country}`, null, ['countryName', Country]);
+          const listItem = createElement('li', 'list-item', 
+            `${Country} ${Math.floor(NewConfirmed * checkPopulationProp(this.populationProp, population))}`, null, ['countryName', Country]);
           this.listContent.append(listItem);
         }
       });
     });
   }
 
-  handleClick = (event) => {
-    const {countryName} = event.target.dataset;
-    if (countryName) {
-      this.renderHeading(countryName)
-    }
-  }
+  // handleClick = (event) => {
+  //   const {countryName} = event.target.dataset;
+  //   if (countryName) {
+  //     this.renderHeading(countryName)
+  //   }
+  // }
 
 
   init() {

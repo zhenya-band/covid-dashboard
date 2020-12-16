@@ -10,10 +10,19 @@
   background-color: rgb(70, 70, 70);
   color: #fff;
   
-  &__heading {
+  &-heading {
     text-align: center;
     font-size: 25px;
-    
+
+    &__title {
+
+    }
+
+    &__data {
+      &--red {
+        color: red;
+      }
+    }
   }
   
   &__content {
@@ -21,10 +30,26 @@
     
   }
 
-  &__item {
+  &-item {
     list-style: none;
     font-size: 20px;
+    display: flex;
+    align-items: center;
     
+    &__flag {
+      width: 35px;
+      height: 25px;
+      margin-right: 20px;
+    }
+
+    &__country {
+
+    }
+
+    &__data {
+      
+    }
+
 
     &:not(:last-child) {
       margin-bottom: 10px;
