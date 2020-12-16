@@ -1,6 +1,4 @@
 import createElement from '../../utils/createElement';
-import Switcher from '../Switcher/Switcher.component';
-import SwitcherObserver from '../../SwitcherObserver';
 import './Table.scss';
 
 class Table {
@@ -28,17 +26,83 @@ class Table {
       createElement('p', '', 'Recovered'),
       this.recovered
     ], content);
-    
-    this.timeSwitcherObserver = new SwitcherObserver();
 
-    this.timeSwitcher = new Switcher(this.table, ['all time', 'last day'], (value) => this.updateTime(value));
-    this.timeSwitcher2 = new Switcher(this.table, ['all time', 'last day'], (value) => this.updateTime(value));
-    const populationSwitcher = new Switcher(this.table, ['total', 'per 100,000 population'], (value) => this.updatePopulation(value));
-
-    this.timeSwitcherObserver.subscribe(this.timeSwitcher);
-    this.timeSwitcherObserver.subscribe(this.timeSwitcher2);
-    
+    this.createTimeSwitcher();
+    this.createTotalSwitcher();
     this.loadData();
+  }
+
+  createTimeSwitcher() {
+    const times = ['all time', 'last day'];
+    let currentTimeIndex = 0;
+    this.time = times[currentTimeIndex];
+
+    const prevButton = createElement('button', '', '<');
+    const nextButton = createElement('button', '', '>');
+    const currentState = createElement('p', '', this.time)
+
+    prevButton.addEventListener('click', () => {
+      currentTimeIndex -= 1;
+      if (currentTimeIndex < 0) {
+        currentTimeIndex = times.length - 1;
+      }
+      this.time = times[currentTimeIndex];
+      currentState.textContent = this.time;
+      this.updateData();
+    });
+
+    nextButton.addEventListener('click', () => {
+      currentTimeIndex += 1;
+      if (currentTimeIndex >= times.length) {
+        currentTimeIndex = 0;
+      }
+      this.time = times[currentTimeIndex];
+      currentState.textContent = this.time;
+      this.updateData();
+    });
+
+    createElement('div', 'table__switcher', [
+      prevButton,
+      currentState,
+      nextButton,
+    ], this.table);
+  }
+
+  createTotalSwitcher() {
+    const totals = ['total', 'per 100,000 population'];
+
+    let currentIndex = 0;
+    this.total = totals[currentIndex];
+
+    const prevButton = createElement('button', '', '<');
+    const nextButton = createElement('button', '', '>');
+    const currentState = createElement('p', '', this.total)
+
+    prevButton.addEventListener('click', () => {
+      currentIndex -= 1;
+      if (currentIndex < 0) {
+        currentIndex = totals.length - 1;
+      }
+      this.total = totals[currentIndex];
+      currentState.textContent = this.total;
+      this.updateData();
+    });
+
+    nextButton.addEventListener('click', () => {
+      currentIndex += 1;
+      if (currentIndex >= totals.length) {
+        currentIndex = 0;
+      }
+      this.total = totals[currentIndex];
+      currentState.textContent = this.total;
+      this.updateData();
+    });
+
+    createElement('div', 'table__switcher', [
+      prevButton,
+      currentState,
+      nextButton,
+    ], this.table);
   }
 
   setCountry(countryName) {
@@ -46,18 +110,7 @@ class Table {
     this.updateData();
   }
 
-  updateTime(time) {
-    this.time = time;
-    this.updateData();
-  }
-
-  updatePopulation(population) {
-    this.total = population;
-    this.updateData();
-  }
-
   updateData() {
-    if (!this.data) return;
     this.title.textContent = this.country.Country;
 
     if (this.dataPopulation) {
