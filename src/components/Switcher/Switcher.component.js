@@ -1,41 +1,59 @@
 import createElement from '../../utils/createElement';
 import './Switcher.scss';
 
-function Switcher(parentElement, items, listener) {
-  let currentIndex = 0;
+class Switcher {
+  constructor(parentElement, items, listener) {
+    this.listener = listener;
+    this.items = items;
+    this.currentIndex = 0;
 
-  const prevButton = createElement('button', '', '<');
-  const nextButton = createElement('button', '', '>');
-  const currentItem = createElement('p');
+    const prevButton = createElement('button', '', '<');
+    const nextButton = createElement('button', '', '>');
+    this.currentItem = createElement('p');
 
-  const updateState = () => {
-    currentItem.textContent = items[currentIndex];
-    listener(items[currentIndex]);
+    prevButton.addEventListener('click', () => {
+      this.currentIndex -= 1;
+      if (this.currentIndex < 0) {
+        this.currentIndex = this.items.length - 1;
+      }
+      this.updateItem();
+    });
+
+    nextButton.addEventListener('click', () => {
+      this.currentIndex += 1;
+      if (this.currentIndex >= this.items.length) {
+        this.currentIndex = 0;
+      }
+      this.updateItem();
+    });
+
+    createElement('div', 'switcher', [
+      prevButton,
+      this.currentItem,
+      nextButton,
+    ], parentElement);
+
+    this.updateItem();
   }
 
-  prevButton.addEventListener('click', () => {
-    currentIndex -= 1;
-    if (currentIndex < 0) {
-      currentIndex = items.length - 1;
+  updateItem() {
+    if (this.observer) {
+      this.observer.broadcast(this.currentIndex);
+    } else {
+      this.currentItem.textContent = this.items[this.currentIndex];
+      this.listener(this.items[this.currentIndex]);
     }
-    updateState();
-  });
+  }
 
-  nextButton.addEventListener('click', () => {
-    currentIndex += 1;
-    if (currentIndex >= items.length) {
-      currentIndex = 0;
-    }
-    updateState();
-  });
+  setItem(index) {
+    this.currentIndex = index;
+    this.currentItem.textContent = this.items[index];
+    this.listener(this.items[this.currentIndex]);
+  }
 
-  createElement('div', 'switcher', [
-    prevButton,
-    currentItem,
-    nextButton,
-  ], parentElement);
-
-  updateState();
+  setObserver(observer) {
+    this.observer = observer;
+  }
 }
 
 export default Switcher;
