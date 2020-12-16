@@ -5,7 +5,7 @@ import Switcher from "../Switcher/Switcher.component";
 import './List.scss';
 
 const summaryURL = 'https://api.covid19api.com/summary';
-const populationURL = 'https://restcountries.eu/rest/v2/all?fields=name;population;flag';
+const populationURL = 'https://restcountries.eu/rest/v2/all?fields=name;population;flag;alpha2Code';
 
 function checkPopulationProp(populationProp, population) {
   if (populationProp === 'relative') {
@@ -86,8 +86,8 @@ export default class List {
     let i = 0;
     this.listContent.innerHTML = '';
     getData(summaryURL).then(({Countries}) => {
-      Countries.forEach(({Country, TotalConfirmed, NewConfirmed}) => {
-        const {population, flag} = this.population.find((item) => item.name === Country ) || 0;
+      Countries.forEach(({Country, TotalConfirmed, NewConfirmed, CountryCode}) => {
+        const {population, flag} = this.population.find((item) => item.alpha2Code === CountryCode ) || 0;
         console.log(i+=1);
         
         if (this.timeProp === 'allTime') {
