@@ -3,7 +3,7 @@ import Switcher from '../Switcher/Switcher.component';
 import './Table.scss';
 
 class Table {
-  constructor(parentElement, observer) {
+  constructor(parentElement, timeObserver, populationObserver) {
     this.table = createElement('div', 'table', null, parentElement);
     
     this.title = createElement('p', 'table__title', '-', this.table);
@@ -29,9 +29,10 @@ class Table {
     ], content);
     
     this.timeSwitcher = new Switcher(this.table, ['all time', 'last day'], (value) => this.updateTime(value));
-    observer.subscribe(this.timeSwitcher);
+    timeObserver.subscribe(this.timeSwitcher);
 
     this.populationSwitcher = new Switcher(this.table, ['total', 'per 100,000 population'], (value) => this.updatePopulation(value));
+    populationObserver.subscribe(this.populationSwitcher);
 
     this.loadData();
   }
