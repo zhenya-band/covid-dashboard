@@ -35,6 +35,10 @@
     font-size: 20px;
     display: flex;
     align-items: center;
+
+    &.hide {
+      display: none;
+    }
     
     &__flag {
       width: 35px;

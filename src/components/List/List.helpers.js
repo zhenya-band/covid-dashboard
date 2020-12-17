@@ -5,8 +5,8 @@ function checkPopulationProps(populationProp, population) {
   return 1;
 }
 
-function checkTime(time, TotalConfirmed, NewConfirmed) {
-  return time === 'all time' ? TotalConfirmed : NewConfirmed;
+function checkTime(time, total, lastDay) {
+  return time === 'all time' ? total : lastDay;
 }
 
 function getParametrs(parametr, data) {
@@ -27,4 +27,22 @@ function getParametrs(parametr, data) {
     }
 }
 
-export {checkPopulationProps, checkTime, getParametrs};
+function getParametrsByCountry(parameter, NewConfirmed, TotalConfirmed, NewDeaths, TotalDeaths, NewRecovered, TotalRecovered) {
+  if (parameter === 'confirmed') {
+    return {
+      new: NewConfirmed,
+      total: TotalConfirmed
+    }
+  } if (parameter === 'death') {
+    return {
+      new: NewDeaths,
+      total: TotalDeaths
+    }
+  } 
+    return {
+      new: NewRecovered,
+      total: TotalRecovered
+    }
+}
+
+export {checkPopulationProps, checkTime, getParametrs, getParametrsByCountry};
