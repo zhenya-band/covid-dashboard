@@ -7,8 +7,8 @@ class CountryObserver {
     this.observers.push(subscriber);
   }
 
-  broadcast(nameCountry) {
-    this.observers.forEach((subscriber) => subscriber.setCountry(nameCountry));
+  broadcast(countryCode) {
+    this.observers.forEach((subscriber) => subscriber.setCountry(countryCode));
   }
 }
 
