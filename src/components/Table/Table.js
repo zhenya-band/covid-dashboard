@@ -37,8 +37,8 @@ class Table {
     this.loadData();
   }
 
-  setCountry(countryName) {
-    this.country = this.data.Countries.find((country) => country.Country === countryName);
+  setCountry(countryCode) {
+    this.country = this.data.Countries.find((country) => country.CountryCode === countryCode);
     this.updateData();
   }
 
