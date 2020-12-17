@@ -70,6 +70,7 @@ export default class List {
 
   renderList() {
     this.listContent.innerHTML = '';
+    const listItems = [];
     getData(summaryURL).then(({Countries}) => {
       Countries.forEach(({Country, NewConfirmed, TotalConfirmed, NewDeaths, TotalDeaths, NewRecovered, TotalRecovered, CountryCode}) => {
         const {population, flag} = this.population.find((item) => item.alpha2Code === CountryCode ) || 0;
@@ -81,7 +82,10 @@ export default class List {
         const countryData = createElement('div', 'list-item__data', 
           `${Math.round(checkTime(this.time, parametrs.total, parametrs.new) * checkPopulationProps(this.populationProps, population))}`);
         const listItem = createElement('li', 'list-item', [listItemFlag, countryName, countryData]);
-        this.listContent.append(listItem);
+        listItems.push(listItem);
+        Array.from(listItems)
+        .sort((a, b) => b.lastChild.textContent - a.lastChild.textContent)
+        .forEach((item) => this.listContent.append(item))
       });
     });
   }
