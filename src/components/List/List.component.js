@@ -1,7 +1,7 @@
 import createElement from "../../utils/createElement";
 import getData from "../../utils/getData";
 import Switcher from '../Switcher/Switcher.component';
-import {checkPopulationProps, checkTime, getParametrs} from './List.helpers';
+import {checkPopulationProps, checkTime, getParametrs, getParametrsByCountry} from './List.helpers';
 
 import './List.scss';
 
@@ -26,6 +26,7 @@ export default class List {
     timeObserver.subscribe(this.timeSwitcher);
     populationObserver.subscribe(this.populationSwitcher);
     
+    this.listSearch.addEventListener('input', this.search);
     this.list.addEventListener('click', this.handleClick);
   }
 
@@ -69,17 +70,43 @@ export default class List {
 
   renderList() {
     this.listContent.innerHTML = '';
+    const listItems = [];
     getData(summaryURL).then(({Countries}) => {
-      Countries.forEach(({Country, TotalConfirmed, NewConfirmed, CountryCode}) => {
+      Countries.forEach(({Country, NewConfirmed, TotalConfirmed, NewDeaths, TotalDeaths, NewRecovered, TotalRecovered, CountryCode}) => {
         const {population, flag} = this.population.find((item) => item.alpha2Code === CountryCode ) || 0;
-        
+
+        const parametrs = getParametrsByCountry(this.parameter, NewConfirmed, TotalConfirmed, NewDeaths, TotalDeaths, NewRecovered, TotalRecovered);
+
         const listItemFlag = createElement('img', 'list-item__flag', null, null, ['src', `${flag}`]);
         const countryName = createElement('div', 'list-item__country', Country);
-        const countryData = createElement('div', 'list-item__data', `${Math.round(checkTime(this.time, TotalConfirmed, NewConfirmed) * checkPopulationProps(this.populationProps, population))}`);
+        const countryData = createElement('div', 'list-item__data', 
+          `${Math.round(checkTime(this.time, parametrs.total, parametrs.new) * checkPopulationProps(this.populationProps, population))}`);
         const listItem = createElement('li', 'list-item', [listItemFlag, countryName, countryData]);
-        this.listContent.append(listItem);
+        listItems.push(listItem);
+        Array.from(listItems)
+        .sort((a, b) => b.lastChild.textContent - a.lastChild.textContent)
+        .forEach((item) => this.listContent.append(item))
       });
     });
+  }
+
+  search = (event) => {
+    const searchValue = event.target.value.trim().toLowerCase();
+    const listItems = document.querySelectorAll('.list-item');
+    if (searchValue !== '') {
+      listItems.forEach((item) => {
+        const itemText = item.querySelector('.list-item__country').innerText.toLowerCase();
+        if (itemText.search(searchValue) === -1) {
+          item.classList.add('hide');
+        } else {
+          item.classList.remove('hide');
+        }
+      })
+    } else {
+        listItems.forEach((item) => {
+        item.classList.remove('hide');
+      });
+    }
   }
 
   // handleClick = (event) => {
