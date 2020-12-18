@@ -4,6 +4,7 @@ import Table from './components/Table/Table';
 import Chart from './components/Chart/Chart.component';
 import CountryObserver from './CountryObserver';
 import SwitcherObserver from './SwitcherObserver';
+import './components/Map/Map'
 
 const countryObserver = new CountryObserver();
 const timeSwitcherObserver = new SwitcherObserver();

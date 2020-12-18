@@ -8,8 +8,9 @@ import './List.scss';
 const summaryURL = 'https://api.covid19api.com/summary';
 const populationURL = 'https://restcountries.eu/rest/v2/all?fields=name;population;flag;alpha2Code';
 export default class List {
-  constructor(timeObserver, populationObserver) {
+  constructor(countryObserver, timeObserver, populationObserver) {
     this.body = document.querySelector('body');
+    this.countryObserver = countryObserver;
     
     this.listHeadingTitle = createElement('div', 'list-heading__title', 'Total cases');
     this.listHeadingData =  createElement('div', 'list-heading__data list-heading__data--red');
@@ -19,9 +20,9 @@ export default class List {
     this.list = createElement('div', 'list', [this.listHeading, this.listSwithers, this.listContent], this.body);
     this.listSearch = createElement('input', 'list-heading__search', null, this.listHeading);
 
-    this.timeSwitcher = new Switcher(this.listHeading, ['all time', 'last day'], (value) => this.updateTime(value));
-    this.populationSwitcher = new Switcher(this.listHeading, ['total ', 'per 100.000 population'], (value) => this.updatePopulation(value));
-    this.parametersSwitcher = new Switcher(this.listHeading, ['confirmed','death', 'recovered'], (value) => this.updateParametrs(value));
+    this.timeSwitcher = new Switcher(this.listHeading, ['all time', 'last day'], this.updateTime);
+    this.populationSwitcher = new Switcher(this.listHeading, ['total ', 'per 100.000 population'], this.updatePopulation);
+    this.parametersSwitcher = new Switcher(this.listHeading, ['confirmed','death', 'recovered'], this.updateParametrs);
 
     timeObserver.subscribe(this.timeSwitcher);
     populationObserver.subscribe(this.populationSwitcher);
@@ -30,19 +31,19 @@ export default class List {
     this.list.addEventListener('click', this.handleClick);
   }
 
-  updateTime(time) {
+  updateTime = (time) => {
     this.time = time;
     this.renderHeading();
     this.renderList();
   }
 
-  updatePopulation(populationProps) {
+  updatePopulation = (populationProps) => {
     this.populationProps = populationProps;
     this.renderHeading();
     this.renderList();
   }
 
-  updateParametrs(parameter) {
+  updateParametrs = (parameter) => {
     this.parameter = parameter;
     this.renderHeading();
     this.renderList();
@@ -54,14 +55,13 @@ export default class List {
     });
   }
 
-  renderHeading(countryName) {
+  renderHeading(listData) {
     this.listHeadingData.textContent = '';
     const worldPopulaton = 7827000000;
-    getData(summaryURL).then(({Countries, Global}) => {
+    getData(summaryURL).then(({Global}) => {
       const parametrs = getParametrs(this.parameter, Global);
-      if (countryName) {
-        const targetCountry = Countries.find((item) => item.Country === countryName);
-        this.listHeadingData.append(`${Math.round(targetCountry[this.timeProp])}`);
+      if (listData) {
+        this.listHeadingData.textContent = listData; 
       } else {
         this.listHeadingData.append(`${Math.round(checkTime(this.time, parametrs.total, parametrs.new) * checkPopulationProps(this.populationProps, worldPopulaton))}`);
       }
@@ -81,7 +81,8 @@ export default class List {
         const countryName = createElement('div', 'list-item__country', Country);
         const countryData = createElement('div', 'list-item__data', 
           `${Math.round(checkTime(this.time, parametrs.total, parametrs.new) * checkPopulationProps(this.populationProps, population))}`);
-        const listItem = createElement('li', 'list-item', [listItemFlag, countryName, countryData]);
+
+        const listItem = createElement('li', 'list-item', [listItemFlag, countryName, countryData], null, ['code', `${CountryCode}`]);
         listItems.push(listItem);
         Array.from(listItems)
         .sort((a, b) => b.lastChild.textContent - a.lastChild.textContent)
@@ -109,12 +110,17 @@ export default class List {
     }
   }
 
-  // handleClick = (event) => {
-  //   const {countryName} = event.target.dataset;
-  //   if (countryName) {
-  //     this.renderHeading(countryName)
-  //   }
-  // }
+  handleClick = (event) => {
+    const listItem = event.target.closest('.list-item');
+    if (listItem) {
+      const listItemData = listItem.lastChild.textContent;
+      this.renderHeading(listItemData);
+      const {code} = listItem.dataset;
+        if (code) {
+          this.countryObserver.broadcast(code);
+        }
+    }
+  }
 
 
   init() {
