@@ -2,7 +2,7 @@ import './style.scss';
 import List from "./components/List/List.component";
 import Table from './components/Table/Table';
 import SwitcherObserver from './SwitcherObserver';
-import './components/Map/Map'
+import './components/Map/Map';
 
 const timeSwitcherObserver = new SwitcherObserver();
 const populationSwitcherObserver = new SwitcherObserver();
