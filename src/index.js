@@ -12,6 +12,7 @@ const populationSwitcherObserver = new SwitcherObserver();
 
 new List(countryObserver, timeSwitcherObserver, populationSwitcherObserver).init();
 const table = new Table(document.body, timeSwitcherObserver, populationSwitcherObserver);
-const chart = new Chart(document.body);
+const chart = new Chart(document.body, populationSwitcherObserver);
 
 countryObserver.subscribe(table);
+countryObserver.subscribe(chart);
