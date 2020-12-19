@@ -3,7 +3,7 @@ import List from "./components/List/List.component";
 import Table from './components/Table/Table';
 import CountryObserver from './CountryObserver';
 import SwitcherObserver from './SwitcherObserver';
-import './components/Map/Map'
+import './components/Map/Map';
 
 const countryObserver = new CountryObserver();
 const timeSwitcherObserver = new SwitcherObserver();

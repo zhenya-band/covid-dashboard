@@ -1,8 +1,8 @@
-import createElement from '../../utils/createElement';
 import './Map.scss';
 
-const mapToken = "pk.eyJ1IjoiYWxpbmFrYXVsaXR6aGFoYSIsImEiOiJja2lvaXhqa3Qwd3J6MnJvNTl5NmFiMDAxIn0.ZfGumpCeXpfbt3l63dYTLw";
-mapboxgl.accessToken = mapToken;
+const mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
+
+mapboxgl.accessToken = 'pk.eyJ1IjoiYWxpbmFrYXVsaXR6aGFoYSIsImEiOiJja2lvaXhqa3Qwd3J6MnJvNTl5NmFiMDAxIn0.ZfGumpCeXpfbt3l63dYTLw';
 const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/dark-v10',
