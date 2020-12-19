@@ -57,6 +57,7 @@ class Table {
     this.title.textContent = this.country.Country;
 
     if (this.dataPopulation) {
+      if (!this.dataPopulation.find((country) => country.name === this.country.Country)) return;
       this.population = this.dataPopulation.find((country) => country.name === this.country.Country).population;
     }
 
@@ -90,7 +91,7 @@ class Table {
       .then(response => response.json())
       .then(result => {
         this.data = result;
-        this.setCountry('Belarus');
+        this.setCountry('BY');
       })
       .catch(error => console.log('error', error));
 
