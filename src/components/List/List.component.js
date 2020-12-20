@@ -19,6 +19,7 @@ export default class List {
     this.listContent = createElement('ul', 'list__content');
     this.list = createElement('div', 'list', [this.listHeading, this.listSwithers, this.listContent]);
     this.listSearch = createElement('input', 'list-heading__search', null, this.listHeading, ['placeholder', 'search']);
+    this.resizeBtn = createElement('div', 'list-resize', '+', this.list);
 
     this.timeSwitcher = new Switcher(this.listHeading, ['all time', 'last day'], this.updateTime);
     this.populationSwitcher = new Switcher(this.listHeading, ['total ', 'per 100.000 population'], this.updatePopulation);
@@ -29,6 +30,7 @@ export default class List {
     
     this.listSearch.addEventListener('input', this.search);
     this.list.addEventListener('click', this.handleClick);
+    this.resizeBtn.addEventListener('click', this.resize);
 
     getData(summaryURL).then((data) => {
       this.data = data;
@@ -59,11 +61,9 @@ export default class List {
     this.renderList();
   }
 
-  // getPopulation() {
-  //   getData(populationURL).then((data) => {
-  //     this.population = data;
-  //   });
-  // }
+  resize = () => {
+    this.list.classList.toggle('list--large');
+  }
 
   renderHeading(listData) {
     this.listHeadingData.textContent = '';
@@ -131,9 +131,5 @@ export default class List {
           this.countryObserver.broadcast(code);
         }
     }
-  }
-
-
-  init() {
   }
 }

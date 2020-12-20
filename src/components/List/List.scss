@@ -4,12 +4,26 @@
 }
 
 .list {
+  position: relative;
   max-width: 350px;
   padding-top: 10px;
   height: 100%;
   overflow: auto;
   background-color: $color-gray-700;
   color: #fff;
+
+  &-resize {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: $color-gray-500;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
   
   &-heading {
     text-align: center;
@@ -25,6 +39,7 @@
       font-size: 50px;
       font-weight: 600;
       margin-bottom: 20px;
+      height: 57px;
       &--red {
         color: red;
       }
@@ -90,6 +105,33 @@
       &:hover {
         cursor: pointer;
       }
+    }
+  }
+
+  // &--large {
+  //   .list {
+  //     position: absolute;
+  //     top: 0;
+  //     left: 0;
+  //     max-width: initial;
+  //     width: 100%;
+  //     z-index: 5;
+  //   }
+  // }
+}
+
+
+.list--large {
+  &.list {
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: initial;
+    width: 100%;
+    z-index: 5;
+
+    .list-item {
+      justify-content: center;
     }
   }
 }
