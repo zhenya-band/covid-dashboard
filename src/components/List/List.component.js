@@ -29,6 +29,16 @@ export default class List {
     
     this.listSearch.addEventListener('input', this.search);
     this.list.addEventListener('click', this.handleClick);
+
+    getData(summaryURL).then((data) => {
+      this.data = data;
+      this.renderHeading();
+      this.renderList();
+    });
+
+    getData(populationURL).then((data) => {
+      this.population = data;
+    })
   }
 
   updateTime = (time) => {
@@ -49,11 +59,11 @@ export default class List {
     this.renderList();
   }
 
-  getPopulation() {
-    getData(populationURL).then((data) => {
-      this.population = data;
-    });
-  }
+  // getPopulation() {
+  //   getData(populationURL).then((data) => {
+  //     this.population = data;
+  //   });
+  // }
 
   renderHeading(listData) {
     this.listHeadingData.textContent = '';
@@ -69,10 +79,11 @@ export default class List {
   }
 
   renderList() {
+    if (!this.data || !this.population) return;
     this.listContent.innerHTML = '';
     const listItems = [];
-    getData(summaryURL).then(({Countries}) => {
-      Countries.forEach(({Country, NewConfirmed, TotalConfirmed, NewDeaths, TotalDeaths, NewRecovered, TotalRecovered, CountryCode}) => {
+    // getData(summaryURL).then(({Countries}) => {
+      this.data.Countries.forEach(({Country, NewConfirmed, TotalConfirmed, NewDeaths, TotalDeaths, NewRecovered, TotalRecovered, CountryCode}) => {
         const {population, flag} = this.population.find((item) => item.alpha2Code === CountryCode ) || 0;
 
         const parametrs = getParametrsByCountry(this.parameter, NewConfirmed, TotalConfirmed, NewDeaths, TotalDeaths, NewRecovered, TotalRecovered);
@@ -88,7 +99,7 @@ export default class List {
         .sort((a, b) => b.lastChild.textContent - a.lastChild.textContent)
         .forEach((item) => this.listContent.append(item))
       });
-    });
+    // });
   }
 
   search = (event) => {
@@ -124,8 +135,5 @@ export default class List {
 
 
   init() {
-    this.getPopulation();
-    // this.renderHeading();
-    // this.renderList();
   }
 }
