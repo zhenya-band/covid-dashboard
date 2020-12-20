@@ -1,12 +1,13 @@
+@import '../../vars.scss';
 .chart {
-  position: absolute;
-  bottom: 0;
-  right: 0;
   width: 400px;
-  height: 360px;
-  margin: 20px;
   border: 1px solid black;
-  background-color: white;
+  background-color: $color-gray-700;
+  padding: 10px 0;
+
+  &__container {
+    margin-bottom: 10px;
+  }
 
   &__canvas {
     width: 100%;

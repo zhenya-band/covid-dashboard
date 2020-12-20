@@ -1,13 +1,14 @@
+@import '../../vars';
 .heading {
   font-size: 35px;
 }
 
 .list {
-  margin: 0;
   max-width: 350px;
-  height: 500px;
+  padding-top: 10px;
+  height: 100%;
   overflow: auto;
-  background-color: rgb(70, 70, 70);
+  background-color: $color-gray-700;
   color: #fff;
   
   &-heading {
@@ -15,19 +16,37 @@
     font-size: 25px;
 
     &__title {
-
+      font-size: 30px;
+      color: $color-white;
+      margin-bottom: 20px;
     }
 
     &__data {
+      font-size: 50px;
+      font-weight: 600;
+      margin-bottom: 20px;
       &--red {
         color: red;
       }
+    }
+
+    &__search {
+      max-width: 80%;
+      background-color: $color-black;
+      color: $color-white;
+      font-weight: 600;
+      border: none;
+      outline: none;
+      padding: 5px;
+      border-radius: 5px;
+      padding: 12px 5px;
+      margin-bottom: 20px;
     }
   }
   
   &__content {
     padding: 0;
-    
+    height: 500px;
   }
 
   &-item {
@@ -35,6 +54,8 @@
     font-size: 20px;
     display: flex;
     align-items: center;
+    padding: 15px 8px;
+    transition: background-color .2s;
 
     &.hide {
       display: none;
@@ -55,14 +76,9 @@
       
     }
 
-
-    &:not(:last-child) {
-      margin-bottom: 10px;
-    }
-
     &:hover {
       cursor: pointer;
-      background-color: rgb(23, 37, 70);
+      background-color: $color-gray-500;
     }
   }
 

@@ -1,0 +1,11 @@
+@import '../../vars.scss';
+
+.header {
+  padding: 30px 30px;
+  background-color: $color-gray-700;
+
+  &__title {
+    margin: 0;
+    color: $color-white;
+  }
+}
