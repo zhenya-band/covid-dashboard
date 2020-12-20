@@ -5,6 +5,10 @@
   background-color: $color-gray-700;
   padding: 10px 0;
 
+  &__container {
+    margin-bottom: 10px;
+  }
+
   &__canvas {
     width: 100%;
   }
