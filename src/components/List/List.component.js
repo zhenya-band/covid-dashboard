@@ -9,7 +9,7 @@ const summaryURL = 'https://api.covid19api.com/summary';
 const populationURL = 'https://restcountries.eu/rest/v2/all?fields=name;population;flag;alpha2Code';
 export default class List {
   constructor(countryObserver, timeObserver, populationObserver) {
-    this.body = document.querySelector('body');
+    // this.body = document.querySelector('body');
     this.countryObserver = countryObserver;
     
     this.listHeadingTitle = createElement('div', 'list-heading__title', 'Total cases');
@@ -17,8 +17,8 @@ export default class List {
 
     this.listHeading = createElement('div', 'list-heading', [this.listHeadingTitle, this.listHeadingData]);
     this.listContent = createElement('ul', 'list__content');
-    this.list = createElement('div', 'list', [this.listHeading, this.listSwithers, this.listContent], this.body);
-    this.listSearch = createElement('input', 'list-heading__search', null, this.listHeading);
+    this.list = createElement('div', 'list', [this.listHeading, this.listSwithers, this.listContent]);
+    this.listSearch = createElement('input', 'list-heading__search', null, this.listHeading, ['placeholder', 'search']);
 
     this.timeSwitcher = new Switcher(this.listHeading, ['all time', 'last day'], this.updateTime);
     this.populationSwitcher = new Switcher(this.listHeading, ['total ', 'per 100.000 population'], this.updatePopulation);

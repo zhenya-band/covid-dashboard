@@ -1,0 +1,34 @@
+@import '../../vars.scss';
+.main {
+  background-color: $color-black;
+  padding-top: 10px;
+
+  &-wrapper {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  &__left {
+
+  }
+
+  &__center {
+    width: 100%;
+    max-width: 900px;
+  }
+
+  &__rigth {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+}
+
+
+/// map
+.map {
+  width: 100%;
+  height: 850px;
+  background-color: $color-gray-700;
+}
+///map

@@ -1,3 +1,4 @@
+import createElement from '../../utils/createElement';
 import './Map.scss';
 
 const mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
