@@ -8,6 +8,7 @@ import './style.scss';
 // import SwitcherObserver from './observers/SwitcherObserver';
 // import './components/Map/Map';
 
+
 import App from './components/App/App.component';
 
 // const countryObserver = new CountryObserver();
