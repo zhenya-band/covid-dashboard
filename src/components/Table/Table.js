@@ -1,5 +1,7 @@
 import createElement from '../../utils/createElement';
+import getData from '../../utils/getData';
 import Switcher from '../Switcher/Switcher.component';
+import { getPopulation, getCasesPer100th } from './Table.helpers';
 import './Table.scss';
 
 class Table {
@@ -38,7 +40,17 @@ class Table {
   }
 
   setCountry(countryCode) {
-    this.country = this.data.Countries.find((country) => country.CountryCode === countryCode);
+    if (!this.data) return;
+
+    if (countryCode === "World") {
+      this.country = {
+        ...this.data.Global,
+        Country: 'World'
+      }
+    } else {
+      this.country = this.data.Countries.find((country) => country.CountryCode === countryCode);
+    }
+
     this.updateData();
   }
 
@@ -53,13 +65,12 @@ class Table {
   }
 
   updateData() {
-    if (!this.data) return;
-    this.title.textContent = this.country.Country;
+    if (!this.data || !this.dataPopulation) return;
 
-    if (this.dataPopulation) {
-      if (!this.dataPopulation.find((country) => country.name === this.country.Country)) return;
-      this.population = this.dataPopulation.find((country) => country.name === this.country.Country).population;
+    if (this.country === 'World') {
+      this.title.textContent = this.country
     }
+    this.title.textContent = this.country.Country;
 
     let confirmed = 0;
     let deaths = 0;
@@ -75,10 +86,12 @@ class Table {
       recovered = this.country.NewRecovered;
     }
 
+    this.population = getPopulation(this.dataPopulation, this.country);
+
     if (this.total === 'per 100,000 population') {
-      confirmed = Math.floor(confirmed * 100000 / this.population);
-      deaths = Math.floor(deaths * 100000 / this.population);
-      recovered = Math.floor(recovered * 100000 / this.population);
+      confirmed = getCasesPer100th(confirmed, this.population);
+      deaths = getCasesPer100th(deaths, this.population);
+      recovered = getCasesPer100th(recovered, this.population);
     }
 
     this.cases.textContent = confirmed;
@@ -87,20 +100,15 @@ class Table {
   }
 
   loadData() {
-    fetch('https://api.covid19api.com/summary', { method: 'GET', redirect: 'follow' })
-      .then(response => response.json())
-      .then(result => {
-        this.data = result;
-        this.setCountry('BY');
-      })
-      .catch(error => console.log('error', error));
-
-    fetch('https://restcountries.eu/rest/v2/all?fields=name;population;', { method: 'GET' })
-      .then(response => response.json())
+    getData('https://api.covid19api.com/summary')
       .then((result) => {
-        this.dataPopulation = result;
-      })
-      .catch(error => console.log('error', error));
+        this.data = result;
+        getData('https://restcountries.eu/rest/v2/all?fields=name;population;')
+          .then((resultPopulation) => {
+            this.dataPopulation = resultPopulation;
+            this.setCountry('World');
+          });
+      });
   }
 }
 
