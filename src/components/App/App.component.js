@@ -29,7 +29,7 @@ export default class App {
     this.countryObserver.subscribe(this.table);
 
     this.mainLeft = createElement('div', 'main__left', this.list.list);
-    this.mainCenter = createElement('div', 'main__center', this.map.mapContainer);
+    this.mainCenter = createElement('div', 'main__center', this.map.map);
     this.mainRigth = createElement('div', 'main__rigth', [this.table.table, this.chart.content]);
 
     this.main = createElement('main', 'main', createElement('div', 'container main-wrapper', [
