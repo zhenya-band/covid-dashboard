@@ -2,15 +2,17 @@ import ChartJS from 'chart.js';
 import Switcher from '../Switcher/Switcher.component';
 import createElement from '../../utils/createElement';
 import getData from '../../utils/getData';
-import { getSlugCountry, getDates, getCases, getCasesPer100th } from './Chart.helpers';
+import { getSlugCountry, getDates, getCases, getWorldDates, getWorldCases, getDailyCases,  getCasesPer100th } from './Chart.helpers';
 import './Chart.scss';
 
-const countriesURL = 'https://api.covid19api.com/countries';
+const worldPopulaton = 7827000000;
 
+const countriesURL = 'https://api.covid19api.com/countries';
+const dayOneWorldURL = 'https://covid19-api.org/api/timeline';
 const dayOneURL = 'https://api.covid19api.com/total/dayone/country';
 const getDayOneURL = (nameCountry) => `${dayOneURL}/${nameCountry}`
 
-const getPopulationURL = (countryCode) => `https://restcountries.eu/rest/v2/alpha/${countryCode}?fields=population;`; 
+const getPopulationURL = (countryCode) => `https://restcountries.eu/rest/v2/alpha/${countryCode}?fields=name;population;`; 
 
 class Chart {
   constructor(parentElement, populationObserver) {
@@ -22,6 +24,7 @@ class Chart {
 
     this.populationSwitcher = new Switcher(this.content, ['total', 'per 100,000 population'], this.updatePopulation);
     this.parametersSwitcher = new Switcher(this.content, ['confirmed','deaths', 'recovered'], this.updateCase);
+    this.dailySwitcher = new Switcher(this.content, ['all cases','daily cases'], this.updateDaily);
     
     populationObserver.subscribe(this.populationSwitcher);
 
@@ -63,21 +66,33 @@ class Chart {
     getData(countriesURL)
       .then((data) => {
         this.countries = data;
-        this.setCountry('BY');
+        this.setCountry('World');
       });
   }
 
   setCountry(countryCode) {
-    const slugCountry = getSlugCountry(this.countries, countryCode);
-    getData(getDayOneURL(slugCountry))
-      .then((dayOneData) => {
-        this.dayOneData = dayOneData;
-        getData(getPopulationURL(countryCode))
-          .then((populationData) => {
-            this.population = populationData.population;
-            this.updateData();
-          });
-      });
+    this.countryCode = countryCode;
+
+    if (countryCode === 'World') {
+      getData(dayOneWorldURL)
+        .then((dayOneWorldData) => {
+          this.dayOneData = dayOneWorldData.reverse();
+          this.population = worldPopulaton;
+          this.updateData();
+        });
+    } else {
+      const slugCountry = getSlugCountry(this.countries, countryCode);
+      getData(getDayOneURL(slugCountry))
+        .then((dayOneData) => {
+          this.dayOneData = dayOneData;
+          getData(getPopulationURL(countryCode))
+            .then((populationData) => {
+              this.population = populationData.population;
+              this.nameCountry = populationData.name;
+              this.updateData();
+            });
+        }); 
+    }
   }
 
   updatePopulation = (population) => {
@@ -89,18 +104,38 @@ class Chart {
     this.cases = cases;
     this.updateData();
   };
+  
+  updateDaily = (daily) => {
+    this.daily = daily;
+    this.updateData();
+  }
 
   updateData() {
-    if (!this.dayOneData || !this.populationParameter) return;
+    if (!this.dayOneData || !this.population) return;
 
-    const dates = getDates(this.dayOneData);
-    let cases = getCases(this.dayOneData, this.cases);
+    let title = '';
+    let dates = [];
+    let cases = [];
+
+    if (this.countryCode === 'World') {
+      title = `World - ${this.cases}`;
+      dates = getWorldDates(this.dayOneData);
+      cases = getWorldCases(this.dayOneData, this.cases);
+    } else {
+      title = `${this.nameCountry} - ${this.cases}`;
+      dates = getDates(this.dayOneData);
+      cases = getCases(this.dayOneData, this.cases);
+    }
+
+    if (this.daily === 'daily cases') {
+      cases = getDailyCases(cases);
+    }
 
     if (this.populationParameter === 'per 100,000 population') {
       cases = getCasesPer100th(cases, this.population);
     }
     
-    this.updateChart(dates, cases, this.cases);
+    this.updateChart(dates, cases, title);
   }
 
   updateChart(labels, data, label) {
