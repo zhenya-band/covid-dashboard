@@ -21,10 +21,11 @@ export default class App {
 
     this.header = new Header();
     this.list = new List(this.countryObserver, this.timeSwitcherObserver, this.populationSwitcherObserver);
-    this.map = new Map();
+    this.map = new Map(this.countryObserver);
     this.table = new Table(document.body, this.timeSwitcherObserver, this.populationSwitcherObserver);
     this.chart = new Chart(document.body, this.populationSwitcherObserver);
 
+    this.countryObserver.subscribe(this.map);
     this.countryObserver.subscribe(this.chart);
     this.countryObserver.subscribe(this.table);
 

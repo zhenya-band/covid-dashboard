@@ -9,7 +9,9 @@ const mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
 mapboxgl.accessToken = 'pk.eyJ1IjoiYWxpbmFrYXVsaXR6aGFoYSIsImEiOiJja2lvaXhqa3Qwd3J6MnJvNTl5NmFiMDAxIn0.ZfGumpCeXpfbt3l63dYTLw';
 
 export default class Map {
-  constructor() {
+  constructor(countryObserver) {
+    this.countryObserver = countryObserver;
+
     this.map = createElement('div', 'map_element');
     this.mapContainer = createElement('div', null, null, this.map, ['id', 'map']);
 
@@ -61,6 +63,13 @@ export default class Map {
     })
   }
 
+  setCountry(countryCode) {
+    if (!this.data) return;
+
+    const country = this.data.find((countryData) => countryData.countryInfo.iso2 === countryCode);
+    this.mapBox.panTo([country.countryInfo.long, country.countryInfo.lat], {duration: 5000});
+  }
+
   updateDate() {
     if (!this.data) return;
 
@@ -80,28 +89,27 @@ export default class Map {
         color: this.getMarkerColor(caseArray[index], maxCases)
       })
         .setLngLat([country.countryInfo.long, country.countryInfo.lat])
-        .setPopup(this.createPopup(country.country, caseArray[index]))
+        .setPopup(this.createPopup(country.countryInfo.iso2, country.country, caseArray[index]))
         .addTo(this.mapBox);
 
       this.markers.push(marker);
     });
   }
 
-  createPopup(countryName, cases) {
+  createPopup(countryCode, countryName, cases) {
     const popup = new mapboxgl.Popup({
-      closeButton: false,
-      closeOnMove: true
+      closeButton: false
     });
     popup.setHTML(`
-      <p>${countryName}</p>
+      <p data-code="${countryCode}">${countryName}</p>
       <p>${this.cases}</p>
       <p>${this.population}</p>
       <p>${this.time}</p>
       <p>${cases}</p>
     `);
     
-    popup.on('open', (e) => {
-      // console.log(e);
+    popup.on('open', () => {
+      this.countryObserver.broadcast(countryCode);
     });
 
     return popup;
