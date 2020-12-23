@@ -75,7 +75,7 @@
     }
 
     &__data {
-      
+      width: 100px;
     }
 
     &:hover {
@@ -98,7 +98,7 @@
 
 .list--large {
   &.list {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     max-width: initial;

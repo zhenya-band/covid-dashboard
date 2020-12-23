@@ -176,5 +176,6 @@ export default class Map {
   resize = () => {
     this.map.classList.toggle('map--large');
     this.mapBox.resize();
+    document.body.classList.toggle('locked');
   }
 }

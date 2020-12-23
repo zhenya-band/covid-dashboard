@@ -116,6 +116,7 @@ class Table {
 
   resize = () => {
     this.table.classList.toggle('table--large');
+    document.body.classList.toggle('locked');
   }
 }
 
