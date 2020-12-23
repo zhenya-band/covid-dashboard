@@ -52,11 +52,26 @@ export default class Map {
     this.mapBox.on('load', (event) => {
       event.target.resize();
     });
+
+    this.createMapLegend();
+  }
+
+  createMapLegend() {
+    createElement('div', 'map-legend', [
+      createElement('div', 'map-legend__row', [
+        createElement('div', 'map-legend__circle map-legend__min'),
+        createElement('div', '',  'Min'),
+      ]),      
+      createElement('div', 'map-legend__row', [
+        createElement('div', 'map-legend__circle map-legend__max'),
+        createElement('div', '', 'Max'),
+      ])      
+    ], this.map);
   }
 
   getMarkerColor = (cases, maxCases) => {
-    const correctionFactor = 0.2;
-    return `rgb(255, ${255 * (cases / (correctionFactor * maxCases))} ,0)`;
+    const correctionFactor = 0.1;
+    return `rgb(255, ${255 - (255 * (cases / (correctionFactor * maxCases)))} ,0)`;
   };
 
   getCountries() {

@@ -24,3 +24,38 @@
     z-index: 5;
   }
 }
+
+.map-legend {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px 20px 10px 10px;
+  background-color: $color-gray-700;
+  color: white;
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+  }
+
+  &__circle {
+    width: 25px;
+    height: 25px;
+    margin: 5px 15px 5px 5px;
+    border-radius: 50%;
+    background-color: gray;
+  }
+
+  &__min {
+    background-color: rgb(255, 255, 0);
+  }
+
+  &__max {
+    background-color: rgb(255, 0, 0);
+  }
+}
