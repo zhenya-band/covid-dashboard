@@ -1,10 +1,11 @@
 import '../../style.scss';
 import './App.style.scss';
+import Header from '../Header/Header.component';
 import List from "../List/List.component";
 import Table from '../Table/Table.component';
 import Chart from '../Chart/Chart.component';
-import Header from '../Header/Header.component';
 import Map from '../Map/Map.component';
+import Footer from '../Footer/Footer.component';
 
 import CountryObserver from '../../observers/CountryObserver';
 import SwitcherObserver from '../../observers/SwitcherObserver';
@@ -19,6 +20,7 @@ export default class App {
 
 
     this.header = new Header();
+    this.footer = new Footer();
     this.list = new List(this.countryObserver, this.timeSwitcherObserver, this.populationSwitcherObserver);
     this.map = new Map(this.countryObserver);
     this.table = new Table(document.body, this.timeSwitcherObserver, this.populationSwitcherObserver);
@@ -38,7 +40,7 @@ export default class App {
   }
 
   createLayout() {
-    this.parent.append(this.header.header, this.main);
+    this.parent.append(this.header.header, this.main, this.footer.footer);
   }
   
   init() {

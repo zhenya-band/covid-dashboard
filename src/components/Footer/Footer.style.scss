@@ -1,0 +1,35 @@
+@import '../../vars.scss';
+.footer {
+  padding: 15px 30px;
+  background-color: $color-gray-700;
+  color: $color-white;
+
+  &-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__list {
+    list-style: none;
+
+    &-item {
+      a {
+        color: $color-white;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  &__logo {
+    width: 150px;
+  }
+
+  &__year {
+
+  }
+}
