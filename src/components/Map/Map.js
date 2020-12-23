@@ -64,6 +64,11 @@ export default class Map {
   }
 
   setCountry(countryCode) {
+    if (this.selfCall === true) {
+      this.selfCall = false;
+      return;
+    }
+
     if (!this.data) return;
 
     const country = this.data.find((countryData) => countryData.countryInfo.iso2 === countryCode);
@@ -109,6 +114,7 @@ export default class Map {
     `);
     
     popup.on('open', () => {
+      this.selfCall = true;
       this.countryObserver.broadcast(countryCode);
     });
 
