@@ -3,7 +3,7 @@ import Switcher from '../Switcher/Switcher.component';
 import createElement from '../../utils/createElement';
 import getData from '../../utils/getData';
 import { getSlugCountry, getDates, getCases, getWorldDates, getWorldCases, getDailyCases,  getCasesPer100th } from './Chart.helpers';
-import './Chart.scss';
+import './Chart.style.scss';
 
 const worldPopulaton = 7827000000;
 
@@ -19,14 +19,18 @@ class Chart {
     this.content = createElement('div', 'chart', null, parentElement);
     this.canvas = createElement('canvas', 'chart__canvas');
     createElement('div', 'chart__container', this.canvas, this.content);
+    this.resizeBtn = createElement('div', 'resize', '', this.content);
+
 
     this.createChart();
 
     this.populationSwitcher = new Switcher(this.content, ['total', 'per 100,000 population'], this.updatePopulation);
     this.parametersSwitcher = new Switcher(this.content, ['confirmed','deaths', 'recovered'], this.updateCase);
     this.dailySwitcher = new Switcher(this.content, ['all cases','daily cases'], this.updateDaily);
-    
+
     populationObserver.subscribe(this.populationSwitcher);
+    
+    this.resizeBtn.addEventListener('click', this.resize);
 
     this.getCountries();
   }
@@ -143,6 +147,10 @@ class Chart {
     this.chart.data.labels = labels;
     this.chart.data.datasets[0].data = data;
     this.chart.update();
+  }
+
+  resize = () => {
+    this.content.classList.toggle('chart--large');
   }
 }
 

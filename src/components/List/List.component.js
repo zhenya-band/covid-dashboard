@@ -9,7 +9,6 @@ const summaryURL = 'https://api.covid19api.com/summary';
 const populationURL = 'https://restcountries.eu/rest/v2/all?fields=name;population;flag;alpha2Code';
 export default class List {
   constructor(countryObserver, timeObserver, populationObserver) {
-    // this.body = document.querySelector('body');
     this.countryObserver = countryObserver;
     
     this.listHeadingTitle = createElement('div', 'list-heading__title', 'Total cases');
@@ -19,7 +18,7 @@ export default class List {
     this.listContent = createElement('ul', 'list__content');
     this.list = createElement('div', 'list', [this.listHeading, this.listSwithers, this.listContent]);
     this.listSearch = createElement('input', 'list-heading__search', null, this.listHeading, ['placeholder', 'search']);
-    this.resizeBtn = createElement('div', 'list-resize', '+', this.list);
+    this.resizeBtn = createElement('div', 'resize', '', this.list);
 
     this.timeSwitcher = new Switcher(this.listHeading, ['all time', 'last day'], this.updateTime);
     this.populationSwitcher = new Switcher(this.listHeading, ['total ', 'per 100.000 population'], this.updatePopulation);
@@ -61,10 +60,6 @@ export default class List {
     this.renderList();
   }
 
-  resize = () => {
-    this.list.classList.toggle('list--large');
-  }
-
   renderHeading(listData) {
     this.listHeadingData.textContent = '';
     const worldPopulaton = 7827000000;
@@ -82,7 +77,6 @@ export default class List {
     if (!this.data || !this.population) return;
     this.listContent.innerHTML = '';
     const listItems = [];
-    // getData(summaryURL).then(({Countries}) => {
       this.data.Countries.forEach(({Country, NewConfirmed, TotalConfirmed, NewDeaths, TotalDeaths, NewRecovered, TotalRecovered, CountryCode}) => {
         const {population, flag} = this.population.find((item) => item.alpha2Code === CountryCode ) || 0;
 
@@ -99,7 +93,6 @@ export default class List {
         .sort((a, b) => b.lastChild.textContent - a.lastChild.textContent)
         .forEach((item) => this.listContent.append(item))
       });
-    // });
   }
 
   search = (event) => {
@@ -131,5 +124,9 @@ export default class List {
           this.countryObserver.broadcast(code);
         }
     }
+  }
+
+  resize = () => {
+    this.list.classList.toggle('list--large');
   }
 }

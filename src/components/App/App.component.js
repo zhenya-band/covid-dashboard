@@ -1,15 +1,14 @@
 import '../../style.scss';
 import './App.style.scss';
 import List from "../List/List.component";
-import Table from '../Table/Table';
+import Table from '../Table/Table.component';
 import Chart from '../Chart/Chart.component';
 import Header from '../Header/Header.component';
-import Map from '../Map/Map';
+import Map from '../Map/Map.component';
 
 import CountryObserver from '../../observers/CountryObserver';
 import SwitcherObserver from '../../observers/SwitcherObserver';
 import createElement from '../../utils/createElement';
-// import Map from './components/Map/Map';
 
 export default class App {
   constructor(parent) {
@@ -42,8 +41,6 @@ export default class App {
     this.parent.append(this.header.header, this.main);
   }
   
-  
-
   init() {
     this.createLayout();
   }

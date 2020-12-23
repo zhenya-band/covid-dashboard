@@ -2,7 +2,7 @@ import createElement from '../../utils/createElement';
 import getData from '../../utils/getData';
 import Switcher from '../Switcher/Switcher.component';
 import { getPopulation, getCasesPer100th } from './Table.helpers';
-import './Table.scss';
+import './Table.style.scss';
 
 class Table {
   constructor(parentElement, timeObserver, populationObserver) {
@@ -29,6 +29,8 @@ class Table {
       createElement('p', '', 'Recovered'),
       this.recovered
     ], content);
+
+    this.resizeBtn = createElement('div', 'resize', '', this.table);
     
     this.timeSwitcher = new Switcher(this.table, ['all time', 'last day'], (value) => this.updateTime(value));
     timeObserver.subscribe(this.timeSwitcher);
@@ -36,6 +38,7 @@ class Table {
     this.populationSwitcher = new Switcher(this.table, ['total', 'per 100,000 population'], (value) => this.updatePopulation(value));
     populationObserver.subscribe(this.populationSwitcher);
 
+    this.resizeBtn.addEventListener('click', this.resize);
     this.loadData();
   }
 
@@ -109,6 +112,10 @@ class Table {
             this.setCountry('World');
           });
       });
+  }
+
+  resize = () => {
+    this.table.classList.toggle('table--large');
   }
 }
 
