@@ -21,15 +21,16 @@ export default class App {
 
     this.header = new Header();
     this.list = new List(this.countryObserver, this.timeSwitcherObserver, this.populationSwitcherObserver);
-    this.map = new Map();
+    this.map = new Map(this.countryObserver);
     this.table = new Table(document.body, this.timeSwitcherObserver, this.populationSwitcherObserver);
     this.chart = new Chart(document.body, this.populationSwitcherObserver);
 
+    this.countryObserver.subscribe(this.map);
     this.countryObserver.subscribe(this.chart);
     this.countryObserver.subscribe(this.table);
 
     this.mainLeft = createElement('div', 'main__left', this.list.list);
-    this.mainCenter = createElement('div', 'main__center', this.map.mapContainer);
+    this.mainCenter = createElement('div', 'main__center', this.map.map);
     this.mainRigth = createElement('div', 'main__rigth', [this.table.table, this.chart.content]);
 
     this.main = createElement('main', 'main', createElement('div', 'container main-wrapper', [

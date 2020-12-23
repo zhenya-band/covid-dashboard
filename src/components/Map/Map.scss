@@ -1,5 +1,11 @@
-#map {
+.map_element {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
 }
 
+#map {
+  margin-bottom: 20px;
+  flex: 1 0 auto;
+}
