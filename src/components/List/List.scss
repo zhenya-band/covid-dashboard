@@ -4,6 +4,7 @@
 }
 
 .list {
+  position: relative;
   max-width: 350px;
   padding-top: 10px;
   height: 100%;
@@ -25,6 +26,7 @@
       font-size: 50px;
       font-weight: 600;
       margin-bottom: 20px;
+      height: 57px;
       &--red {
         color: red;
       }
@@ -90,6 +92,46 @@
       &:hover {
         cursor: pointer;
       }
+    }
+  }
+}
+
+.list--large {
+  &.list {
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: initial;
+    width: 100%;
+    z-index: 5;
+
+    .list-item {
+      justify-content: center;
+
+      &__country {
+        width: 350px;
+      }
+
+      &__data {
+        width: 100px;
+        text-align: center;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .list {
+    max-width: 270px;
+
+    &-heading {
+      &__data {
+        font-size: 35px;
+      }
+    }
+
+    &-item {
+      font-size: 16px;
     }
   }
 }

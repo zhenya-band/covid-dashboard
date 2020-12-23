@@ -1,7 +1,7 @@
 import createElement from '../../utils/createElement';
 import getData from '../../utils/getData';
 import Switcher from '../Switcher/Switcher.component';
-import './Map.scss';
+import './Map.style.scss';
 
 const url = 'https://corona.lmao.ninja/v2/countries';
 const mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
@@ -14,10 +14,13 @@ export default class Map {
 
     this.map = createElement('div', 'map_element');
     this.mapContainer = createElement('div', null, null, this.map, ['id', 'map']);
+    this.resizeBtn = createElement('div', 'resize', '', this.map);
 
     this.timeSwitcher = new Switcher(this.map, ['all time', 'last day'], this.updateTime);
     this.populationSwitcher = new Switcher(this.map, ['total ', 'per 100.000 population'], this.updatePopulation);
     this.parametersSwitcher = new Switcher(this.map, ['confirmed','death', 'recovered'], this.updateCases);
+
+    this.resizeBtn.addEventListener('click', this.resize);
 
     this.createMap();
     this.getCountries();
@@ -148,7 +151,11 @@ export default class Map {
         currentCases = Math.round(currentCases * perPopulation / country.population);
       }
     }
-
     return currentCases;
+  }
+
+  resize = () => {
+    this.map.classList.toggle('map--large');
+    this.mapBox.resize();
   }
 }

@@ -3,7 +3,6 @@
   background-color: $color-black;
   padding-top: 30px;
   padding-bottom: 30px;
-  height: calc(100vh - 96px);
 
   &-wrapper {
     display: flex;
@@ -23,8 +22,53 @@
   }
 
   &__rigth {
+    height: 600px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+  }
+}
+
+.resize {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  padding: 5px;
+  border-radius: 5px;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+  }
+
+  &::after {
+    content: "";
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    background-image: url("../../assets/img/full-screen.svg");
+    background-repeat: no-repeat;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .main-wrapper {
+    flex-wrap: wrap;
+  }
+  .main {
+    &__left {
+      padding-bottom: 15px;
+    }
+
+    &__center {
+      order: -1;
+      margin-bottom: 15px;
+    }
+
+    &__rigth {
+      height: 570px;
+      padding-bottom: 15px;
+    }
   }
 }
