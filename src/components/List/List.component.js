@@ -3,7 +3,7 @@ import getData from "../../utils/getData";
 import Switcher from '../Switcher/Switcher.component';
 import {checkPopulationProps, checkTime, getParametrs, getParametrsByCountry} from './List.helpers';
 
-import './List.scss';
+import './List.style.scss';
 
 const summaryURL = 'https://api.covid19api.com/summary';
 const populationURL = 'https://restcountries.eu/rest/v2/all?fields=name;population;flag;alpha2Code';
@@ -128,5 +128,6 @@ export default class List {
 
   resize = () => {
     this.list.classList.toggle('list--large');
+    document.body.classList.toggle('locked');
   }
 }

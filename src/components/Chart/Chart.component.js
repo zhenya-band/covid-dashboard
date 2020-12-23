@@ -151,6 +151,7 @@ class Chart {
 
   resize = () => {
     this.content.classList.toggle('chart--large');
+    document.body.classList.toggle('locked');
   }
 }
 
