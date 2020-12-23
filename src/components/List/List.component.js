@@ -8,7 +8,7 @@ import './List.scss';
 const summaryURL = 'https://api.covid19api.com/summary';
 const populationURL = 'https://restcountries.eu/rest/v2/all?fields=name;population;flag;alpha2Code';
 export default class List {
-  constructor(countryObserver, timeObserver, populationObserver) {
+  constructor(countryObserver, timeObserver, populationObserver, casesObserver) {
     this.countryObserver = countryObserver;
     
     this.listHeadingTitle = createElement('div', 'list-heading__title', 'Total cases');
@@ -26,6 +26,7 @@ export default class List {
 
     timeObserver.subscribe(this.timeSwitcher);
     populationObserver.subscribe(this.populationSwitcher);
+    casesObserver.subscribe(this.parametersSwitcher);
     
     this.listSearch.addEventListener('input', this.search);
     this.list.addEventListener('click', this.handleClick);

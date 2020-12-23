@@ -15,7 +15,7 @@ const getDayOneURL = (nameCountry) => `${dayOneURL}/${nameCountry}`
 const getPopulationURL = (countryCode) => `https://restcountries.eu/rest/v2/alpha/${countryCode}?fields=name;population;`; 
 
 class Chart {
-  constructor(parentElement, populationObserver) {
+  constructor(parentElement, populationObserver, casesObsesrver) {
     this.content = createElement('div', 'chart', null, parentElement);
     this.canvas = createElement('canvas', 'chart__canvas');
     createElement('div', 'chart__container', this.canvas, this.content);
@@ -29,6 +29,7 @@ class Chart {
     this.dailySwitcher = new Switcher(this.content, ['all cases','daily cases'], this.updateDaily);
 
     populationObserver.subscribe(this.populationSwitcher);
+    casesObsesrver.subscribe(this.parametersSwitcher);
     
     this.resizeBtn.addEventListener('click', this.resize);
 

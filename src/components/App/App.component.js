@@ -17,14 +17,14 @@ export default class App {
     this.countryObserver = new CountryObserver();
     this.timeSwitcherObserver = new SwitcherObserver();
     this.populationSwitcherObserver = new SwitcherObserver();
-
+    this.casesSwitcherObserver = new SwitcherObserver();
 
     this.header = new Header();
     this.footer = new Footer();
-    this.list = new List(this.countryObserver, this.timeSwitcherObserver, this.populationSwitcherObserver);
-    this.map = new Map(this.countryObserver);
+    this.list = new List(this.countryObserver, this.timeSwitcherObserver, this.populationSwitcherObserver, this.casesSwitcherObserver);
+    this.map = new Map(this.countryObserver, this.timeSwitcherObserver, this.populationSwitcherObserver, this.casesSwitcherObserver);
     this.table = new Table(document.body, this.timeSwitcherObserver, this.populationSwitcherObserver);
-    this.chart = new Chart(document.body, this.populationSwitcherObserver);
+    this.chart = new Chart(document.body, this.populationSwitcherObserver, this.casesSwitcherObserver);
 
     this.countryObserver.subscribe(this.map);
     this.countryObserver.subscribe(this.chart);
