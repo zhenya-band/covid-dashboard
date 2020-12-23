@@ -9,7 +9,7 @@ const mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
 mapboxgl.accessToken = 'pk.eyJ1IjoiYWxpbmFrYXVsaXR6aGFoYSIsImEiOiJja2lvaXhqa3Qwd3J6MnJvNTl5NmFiMDAxIn0.ZfGumpCeXpfbt3l63dYTLw';
 
 export default class Map {
-  constructor(countryObserver) {
+  constructor(countryObserver, timeObserver, populationObserver, casesObserver) {
     this.countryObserver = countryObserver;
 
     this.map = createElement('div', 'map_element');
@@ -18,7 +18,11 @@ export default class Map {
 
     this.timeSwitcher = new Switcher(this.map, ['all time', 'last day'], this.updateTime);
     this.populationSwitcher = new Switcher(this.map, ['total ', 'per 100.000 population'], this.updatePopulation);
-    this.parametersSwitcher = new Switcher(this.map, ['confirmed','death', 'recovered'], this.updateCases);
+    this.parametersSwitcher = new Switcher(this.map, ['confirmed','deaths', 'recovered'], this.updateCases);
+
+    timeObserver.subscribe(this.timeSwitcher);
+    populationObserver.subscribe(this.populationSwitcher);
+    casesObserver.subscribe(this.parametersSwitcher);
 
     this.resizeBtn.addEventListener('click', this.resize);
 
@@ -145,7 +149,7 @@ export default class Map {
     if (this.time === 'all time') {
       if (this.cases === 'confirmed') {
         currentCases = country.cases;
-      } else if (this.cases === 'death') {
+      } else if (this.cases === 'deaths') {
         currentCases = country.deaths;
       } else if (this.cases === 'recovered') {
         currentCases = country.recovered;
@@ -153,7 +157,7 @@ export default class Map {
     } else if (this.time === 'last day') {
       if (this.cases === 'confirmed') {
         currentCases = country.todayCases;
-      } else if (this.cases === 'death') {
+      } else if (this.cases === 'deaths') {
         currentCases = country.todayDeaths;
       } else if (this.cases === 'recovered') {
         currentCases = country.todayRecovered;
