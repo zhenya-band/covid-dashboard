@@ -1,0 +1,61 @@
+@import '../../vars';
+.map_element {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding-bottom: 10px;
+  background-color: $color-gray-700;
+}
+
+#map {
+  margin-bottom: 20px;
+  flex: 1 0 auto;
+}
+
+.map--large {
+  &.map_element {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 5;
+  }
+}
+
+.map-legend {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px 20px 10px 10px;
+  background-color: $color-gray-700;
+  color: white;
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+  }
+
+  &__circle {
+    width: 25px;
+    height: 25px;
+    margin: 5px 15px 5px 5px;
+    border-radius: 50%;
+    background-color: gray;
+  }
+
+  &__min {
+    background-color: rgb(255, 255, 0);
+  }
+
+  &__max {
+    background-color: rgb(255, 0, 0);
+  }
+}

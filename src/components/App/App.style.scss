@@ -1,0 +1,74 @@
+@import '../../vars.scss';
+.main {
+  background-color: $color-black;
+  padding-top: 30px;
+  padding-bottom: 30px;
+
+  &-wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  &__left {
+    height: 600px;
+  }
+
+  &__center {
+    width: 100%;
+    height: 600px;
+    max-width: 1100px;
+    margin: 0 15px;
+  }
+
+  &__rigth {
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}
+
+.resize {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  padding: 5px;
+  border-radius: 5px;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+  }
+
+  &::after {
+    content: "";
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    background-image: url("../../assets/img/full-screen.svg");
+    background-repeat: no-repeat;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .main-wrapper {
+    flex-wrap: wrap;
+  }
+  .main {
+    &__left {
+      padding-bottom: 15px;
+    }
+
+    &__center {
+      order: -1;
+      margin-bottom: 15px;
+    }
+
+    &__rigth {
+      height: 570px;
+      padding-bottom: 15px;
+    }
+  }
+}

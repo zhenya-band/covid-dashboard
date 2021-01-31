@@ -1,0 +1,137 @@
+@import '../../vars';
+.heading {
+  font-size: 35px;
+}
+
+.list {
+  position: relative;
+  max-width: 350px;
+  padding-top: 10px;
+  height: 100%;
+  overflow: auto;
+  background-color: $color-gray-700;
+  color: #fff;
+  
+  &-heading {
+    text-align: center;
+    font-size: 25px;
+
+    &__title {
+      font-size: 30px;
+      color: $color-white;
+      margin-bottom: 20px;
+    }
+
+    &__data {
+      font-size: 50px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      height: 57px;
+      &--red {
+        color: red;
+      }
+    }
+
+    &__search {
+      max-width: 80%;
+      background-color: $color-black;
+      color: $color-white;
+      font-weight: 600;
+      border: none;
+      outline: none;
+      padding: 5px;
+      border-radius: 5px;
+      padding: 12px 5px;
+      margin-bottom: 20px;
+    }
+  }
+  
+  &__content {
+    padding: 0;
+    height: 500px;
+  }
+
+  &-item {
+    list-style: none;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    padding: 15px 8px;
+    transition: background-color .2s;
+
+    &.hide {
+      display: none;
+    }
+    
+    &__flag {
+      width: 35px;
+      height: 25px;
+      margin-right: 20px;
+    }
+
+    &__country {
+      width: 150px;
+      margin-right: 10px;
+    }
+
+    &__data {
+      width: 100px;
+    }
+
+    &:hover {
+      cursor: pointer;
+      background-color: $color-gray-500;
+    }
+  }
+
+  &-switchers {
+    display: flex;
+
+    &__label {
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.list--large {
+  &.list {
+    position: fixed;
+    top: 0;
+    left: 0;
+    max-width: initial;
+    width: 100%;
+    z-index: 5;
+
+    .list-item {
+      justify-content: center;
+
+      &__country {
+        width: 350px;
+      }
+
+      &__data {
+        width: 100px;
+        text-align: center;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .list {
+    max-width: 270px;
+
+    &-heading {
+      &__data {
+        font-size: 35px;
+      }
+    }
+
+    &-item {
+      font-size: 16px;
+    }
+  }
+}

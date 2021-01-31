@@ -1,0 +1,69 @@
+@import '../../vars';
+.table {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: $color-gray-700;
+  color: $color-white;
+  padding: 25px 0;
+
+  &__title {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  &__content {
+    display: flex;
+    flex: 1 0 auto;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    font-size: 20px;
+  }
+
+  &__switcher {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__cases {
+    color: red;
+  }
+
+  &__deaths {
+    color: lightgrey;
+  }
+
+  &__recovered {
+    color: green;
+  }
+}
+
+.table--large {
+  &.table {
+    position: fixed;
+    top: 0;
+    left: 0;
+    max-width: initial;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+
+    .table__title {
+      margin-bottom: 45px;
+    }
+
+    .table__content {
+      max-height: 200px;
+    }
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .table {
+
+    &__content {
+      font-size: 16px;
+    }
+  }
+}
